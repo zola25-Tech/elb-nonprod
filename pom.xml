@@ -92,14 +92,12 @@
 		</dependency>	
 	</dependencies>
 	<distributionManagement>
-	    <repository>
-	      <id>github</id>
-	      <name></name>
-	      <url>https://maven.pkg.github.com/zola25-Tech/elb-nonprod</url>
-	    </repository>
-	    
-	    
-	</distributionManagement>
+  <repository>
+    <id>github</id>
+    <url>https://maven.pkg.github.com/zola25-Tech/elb-nonprod</url>
+  </repository>
+</distributionManagement>
+
 	
 	<build>
 		<finalName>xashy-webapp</finalName>

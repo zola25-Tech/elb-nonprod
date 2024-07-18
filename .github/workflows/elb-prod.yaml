@@ -49,13 +49,13 @@ jobs:
           aws-region: us-east-1
 
       - name: copy artifact to s3
-        run: aws s3 cp target/*.war s3://mavenartifact
+        run: aws s3 cp target/*.war s3://mavenatifact
 
       - name: create application version
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name non-prod \
-            --source-bundle S3Bucket="mavenartifact",S3Key="ashy-webapp.war" \
+            --source-bundle S3Bucket="mavenatifact",S3Key="ashy-webapp.war" \
             --version-label "var-${{ github.sha }}" \
             --description "commit-sha-${{ github.sha }}"
 

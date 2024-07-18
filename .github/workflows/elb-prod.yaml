@@ -19,6 +19,19 @@ jobs:
           distribution: "adopt"
           java-version: "11"
 
+      - name: setup Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo "<settings>
+                  <servers>
+                    <server>
+                      <id>github</id>
+                      <username>${{ secrets.GITHUB_ACTOR }}</username>
+                      <password>${{ secrets.GITHUB_TOKEN }}</password>
+                    </server>
+                  </servers>
+                </settings>" > ~/.m2/settings.xml
+
       - name: maven build
         run: mvn clean package
 
@@ -26,6 +39,7 @@ jobs:
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
 
       - name: authenticate to AWS
         uses: aws-actions/configure-aws-credentials@v1

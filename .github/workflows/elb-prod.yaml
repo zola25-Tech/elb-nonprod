@@ -35,11 +35,11 @@ jobs:
       - name: maven build
         run: mvn clean package
 
-      - name: upload artifact to artifact repository
-        run: mvn --batch-mode deploy -X
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
+        - name: Upload Maven artifact into GitHub packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: webapp
+          path: target/*.war
 
       - name: authenticate to AWS
         uses: aws-actions/configure-aws-credentials@v1
@@ -58,6 +58,7 @@ jobs:
             --source-bundle S3Bucket="mavenartifact",S3Key="ashy-webapp.war" \
             --version-label "var-${{ github.sha }}" \
             --description "commit-sha-${{ github.sha }}"
+
 
       - name: deploy to elastic beanstalk
         run: aws elasticbeanstalk update-environment --environment-name Non-prod-environment --version-label "var-${{ github.sha }}"

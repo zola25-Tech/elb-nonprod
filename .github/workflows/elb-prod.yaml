@@ -1,0 +1,60 @@
+name: build application with maven and deploy to elastic beanstalk
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_elasticbeanstalk:
+    name: deploy to non-prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: setup java and maven
+        uses: actions/setup-java@v3
+        with:
+          distribution: "adopt"
+          java-version: "11"
+
+      - name: maven build
+        run: mvn clean package
+
+      - name: upload artifact to artifact repository
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: authenticate to AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESSKEY_SECRETS }}
+          aws-secret-access-key: ${{ secrets.SECRETKEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: copy artifact to s3
+        run: aws s3 cp target/*.war s3://mavenartifact
+
+      - name: create application version
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name non-prod \
+            --source-bundle S3Bucket="mavenartifact",S3Key="ashy-webapp.war" \
+            --version-label "var-${{ github.sha }}" \
+            --description "commit-sha-${{ github.sha }}"
+
+      - name: deploy to elastic beanstalk
+        run: aws elasticbeanstalk update-environment --environment-name Non-prod-environment --version-label "var-${{ github.sha }}"
+
+            
+
+
+                    
+
+
+
+
+
+        

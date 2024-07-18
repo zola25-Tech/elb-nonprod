@@ -1,3 +1,4 @@
+
 name: build application with maven and deploy to elastic beanstalk
 
 on:
@@ -26,7 +27,7 @@ jobs:
                   <servers>
                     <server>
                       <id>github</id>
-                      <username>${{ secrets.GITHUB_ACTOR }}</username>
+                      <username>${{ github.actor }}</username>
                       <password>${{ secrets.GITHUB_TOKEN }}</password>
                     </server>
                   </servers>

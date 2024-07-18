@@ -35,7 +35,7 @@ jobs:
       - name: maven build
         run: mvn clean package
 
-        - name: Upload Maven artifact into GitHub packages
+      - name: upload Maven artifact into GitHub packages
         uses: actions/upload-artifact@v3
         with:
           name: webapp
@@ -58,7 +58,6 @@ jobs:
             --source-bundle S3Bucket="mavenartifact",S3Key="ashy-webapp.war" \
             --version-label "var-${{ github.sha }}" \
             --description "commit-sha-${{ github.sha }}"
-
 
       - name: deploy to elastic beanstalk
         run: aws elasticbeanstalk update-environment --environment-name Non-prod-environment --version-label "var-${{ github.sha }}"

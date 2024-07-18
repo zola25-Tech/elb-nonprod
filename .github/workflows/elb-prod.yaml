@@ -61,15 +61,3 @@ jobs:
 
       - name: deploy to elastic beanstalk
         run: aws elasticbeanstalk update-environment --environment-name Non-prod-environment --version-label "var-${{ github.sha }}"
-"
-
-            
-
-
-                    
-
-
-
-
-
-        

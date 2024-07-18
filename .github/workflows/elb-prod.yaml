@@ -55,7 +55,7 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
             --application-name non-prod \
-            --source-bundle S3Bucket="mavenatifact",S3Key="ashy-webapp.war" \
+            --source-bundle S3Bucket="mavenatifact",S3Key="xashy-webapp.war" \
             --version-label "var-${{ github.sha }}" \
             --description "commit-sha-${{ github.sha }}"
 

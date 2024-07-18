@@ -1,3 +1,4 @@
+
 name: build application with maven and deploy to elastic beanstalk
 
 on:
@@ -44,9 +45,9 @@ jobs:
       - name: authenticate to AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.ACCESSKEY }}
-          aws-secret-access-key: ${{ SECRETKEY }}
-          aws-region: ${{ secrets.AWSREGION }}
+          aws-access-key-id: ${{ secrets.ACCESSKEY_SECRETS }}
+          aws-secret-access-key: ${{ secrets.SECRETKEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: copy artifact to s3
         run: aws s3 cp target/*.war s3://mavenartifact

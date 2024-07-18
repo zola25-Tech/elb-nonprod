@@ -36,7 +36,7 @@ jobs:
         run: mvn clean package
 
       - name: upload artifact to artifact repository
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode deploy -X
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
@@ -44,8 +44,8 @@ jobs:
       - name: authenticate to AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.SECRET_ACCESSKEY }}
-          aws-secret-access-key: ${{ secrets.SECRETKEY_SECRET }}
+          aws-access-key-id: ${{ secrets.ACCESSKEY_SECRETS }}
+          aws-secret-access-key: ${{ secrets.SECRETKEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: copy artifact to s3
